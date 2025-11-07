@@ -1,0 +1,32 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #1890ff 0%, #52c41a 100%);
+  padding: 40px;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.App-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin: 0;
+}

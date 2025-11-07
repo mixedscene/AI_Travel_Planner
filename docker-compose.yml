@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  ai-travel-planner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+        - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+        - VITE_ALIBABA_API_KEY=${VITE_ALIBABA_API_KEY}
+        - VITE_XFYUN_APP_ID=${VITE_XFYUN_APP_ID}
+        - VITE_XFYUN_API_KEY=${VITE_XFYUN_API_KEY}
+        - VITE_XFYUN_API_SECRET=${VITE_XFYUN_API_SECRET}
+        - VITE_AMAP_KEY=${VITE_AMAP_KEY}
+        - VITE_AMAP_SECURITY_CODE=${VITE_AMAP_SECURITY_CODE}
+    image: ai-travel-planner:latest
+    container_name: ai-travel-planner
+    ports:
+      - "8080:80"
+    environment:
+      - ALIBABA_API_KEY=${ALIBABA_API_KEY:-${VITE_ALIBABA_API_KEY}}
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+

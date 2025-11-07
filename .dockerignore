@@ -1,0 +1,57 @@
+# 依赖
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 构建产物
+dist
+dist-ssr
+*.local
+
+# 编辑器
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# 测试
+coverage
+*.test.js
+*.spec.js
+__tests__
+
+# 文档
+*.md
+!README.md
+docs
+
+# 环境变量（在构建时通过参数传入）
+.env
+.env.local
+.env.*.local
+
+# 临时文件
+*.log
+tmp
+temp
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+

@@ -1,0 +1,8 @@
+[core]
+	quotepath = false
+	editor = notepad
+[i18n]
+	commitencoding = utf-8
+	logoutputencoding = utf-8
+[gui]
+	encoding = utf-8

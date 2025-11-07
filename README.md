@@ -2,7 +2,6 @@
 
 一个基于人工智能的智能旅行规划Web应用，帮助用户轻松规划完美的旅行路线。
 
-[![Docker Build](https://github.com/yourusername/ai-travel-planner/actions/workflows/docker-build.yml/badge.svg)](https://github.com/yourusername/ai-travel-planner/actions/workflows/docker-build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 📑 目录
@@ -86,24 +85,7 @@ npm run build
 
 ## 🐳 Docker部署
 
-### 快速开始
-
-```bash
-# 从阿里云镜像仓库拉取
-docker pull registry.cn-hangzhou.aliyuncs.com/[命名空间]/ai-travel-planner:latest
-
-# 运行容器
-docker run -d \
-  --name ai-travel-planner \
-  -p 8080:80 \
-  -e ALIBABA_API_KEY=your_api_key \
-  registry.cn-hangzhou.aliyuncs.com/[命名空间]/ai-travel-planner:latest
-
-# 访问应用
-# 浏览器打开 http://localhost:8080
-```
-
-### 使用docker-compose
+### 使用docker-compose（推荐）
 
 ```bash
 # 克隆仓库
@@ -124,11 +106,50 @@ docker-compose logs -f
 docker-compose down
 ```
 
-### 自动构建
+### 使用Docker命令构建
 
-本项目配置了GitHub Actions，每次推送代码到main分支都会自动构建Docker镜像并推送到阿里云容器镜像服务。
+```bash
+# 构建镜像
+docker build -t ai-travel-planner:latest .
 
-**详细Docker使用指南请查看：** [DOCKER_README.md](DOCKER_README.md)
+# 运行容器
+docker run -d \
+  --name ai-travel-planner \
+  -p 8080:80 \
+  -e ALIBABA_API_KEY=your_api_key \
+  ai-travel-planner:latest
+
+# 访问应用
+# 浏览器打开 http://localhost:8080
+```
+
+### 构建问题解决
+
+如果遇到 Docker 构建问题（如无法连接 Docker Hub），请查看：
+- **[Docker镜像加速配置.md](Docker镜像加速配置.md)** - 详细的镜像加速配置
+
+**常用解决方案：**
+
+**方案1：使用公开国内镜像源（推荐，无需登录）**
+```bash
+# 使用腾讯云公开镜像源构建（最稳定）
+docker-compose -f docker-compose.mirror.yml build
+docker-compose -f docker-compose.mirror.yml up -d
+```
+
+**方案2：使用阿里云镜像源（需要登录）**
+```bash
+# 使用阿里云镜像源构建
+docker-compose -f docker-compose.china.yml build
+docker-compose -f docker-compose.china.yml up -d
+```
+
+**方案3：配置 Docker 镜像加速器**
+参考 [Docker镜像加速配置.md](Docker镜像加速配置.md) 配置镜像加速器后，使用标准构建命令：
+```bash
+docker-compose build
+docker-compose up -d
+```
 
 ## API配置指南
 
@@ -192,10 +213,6 @@ ai-travel-planner/
 │   └── main.tsx        # 应用入口
 ├── api/                  # Vercel Functions / API服务
 │   └── generate-itinerary.js
-├── .github/              # GitHub配置
-│   ├── workflows/        # GitHub Actions工作流
-│   │   └── docker-build.yml
-│   └── SECRETS_SETUP.md
 ├── Dockerfile            # Docker镜像构建文件
 ├── docker-compose.yml    # Docker Compose配置
 ├── nginx.conf            # Nginx配置
@@ -208,14 +225,8 @@ ai-travel-planner/
 
 ## 📚 详细文档
 
-- [Docker部署指南](DOCKER_README.md) - 完整的Docker使用说明
-- [提交指南](SUBMISSION_GUIDE.md) - 项目提交流程
-- [快速开始](QUICK_START.md) - 快速上手指南
-- [用户手册](USER_GUIDE.md) - 详细使用说明
-- [环境配置](ENV_SETUP.md) - 环境变量配置详解
-- [部署指南](DEPLOYMENT.md) - 生产环境部署
-- [CORS问题说明](CORS问题说明.md) - CORS跨域问题解决
-- [GitHub Secrets配置](.github/SECRETS_SETUP.md) - CI/CD配置
+- [Docker安全使用指南](Docker安全使用指南.md) - Docker安全配置说明
+- [Docker镜像加速配置](Docker镜像加速配置.md) - 镜像加速配置说明
 
 ## 使用说明
 

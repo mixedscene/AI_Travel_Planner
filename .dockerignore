@@ -54,4 +54,5 @@ temp
 Dockerfile
 .dockerignore
 docker-compose.yml
+# 注意: docker-entrypoint.sh 和 nginx.conf 需要被复制，所以不在这里排除
 

@@ -1,8 +1,10 @@
+# 使用公开国内镜像源的 docker-compose 配置
+# 使用腾讯云镜像源（公开可用，无需登录）
 services:
   ai-travel-planner:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.mirror
       args:
         - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
         - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}

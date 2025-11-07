@@ -1,8 +1,9 @@
+# 使用国内镜像源的 docker-compose 配置
 services:
   ai-travel-planner:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.china
       args:
         - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
         - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}

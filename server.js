@@ -1,5 +1,5 @@
-const http = require('http');
-const axios = require('axios');
+import http from 'http';
+import axios from 'axios';
 
 const PORT = 3000;
 
@@ -45,12 +45,12 @@ const generateItinerary = async (req, res) => {
         return;
       }
 
-      // 检查API密钥
-      const apiKey = process.env.ALIBABA_API_KEY;
+      // 检查API密钥（支持两种环境变量名称）
+      const apiKey = process.env.ALIBABA_API_KEY || process.env.VITE_ALIBABA_API_KEY;
       if (!apiKey) {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ error: 'API key not configured' }));
+        res.end(JSON.stringify({ error: 'API key not configured. Please set ALIBABA_API_KEY or VITE_ALIBABA_API_KEY environment variable.' }));
         return;
       }
 
@@ -108,18 +108,28 @@ const generateItinerary = async (req, res) => {
 
 // 创建HTTP服务器
 const server = http.createServer((req, res) => {
-  console.log(`${req.method} ${req.url}`);
+  // 解析URL路径（移除查询字符串）
+  let pathname = req.url;
+  if (pathname && pathname.includes('?')) {
+    pathname = pathname.split('?')[0];
+  }
+  // 移除尾部斜杠（除了根路径）
+  if (pathname && pathname !== '/' && pathname.endsWith('/')) {
+    pathname = pathname.slice(0, -1);
+  }
 
-  if (req.url === '/generate-itinerary' || req.url === '/generate-itinerary/') {
+  console.log(`${req.method} ${pathname || '/'}`);
+
+  if (pathname === '/generate-itinerary') {
     generateItinerary(req, res);
-  } else if (req.url === '/health' || req.url === '/health/') {
+  } else if (pathname === '/health') {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ status: 'ok' }));
+    res.end(JSON.stringify({ status: 'ok', service: 'ai-travel-planner-api' }));
   } else {
     res.statusCode = 404;
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify({ error: 'Not found' }));
+    res.end(JSON.stringify({ error: 'Not found', path: pathname || '/' }));
   }
 });
 

@@ -1,8 +1,7 @@
-# 多阶段构建
+# 多阶段构建 - 使用国内镜像源版本
 # 阶段1: 构建阶段
-# 使用国内镜像源加速（如果无法连接Docker Hub，可以尝试使用阿里云镜像）
-# 阿里云镜像：registry.cn-hangzhou.aliyuncs.com/acs/node:18-alpine
-FROM node:18-alpine AS builder
+# 使用阿里云镜像源（如果 Docker Hub 无法访问）
+FROM registry.cn-hangzhou.aliyuncs.com/acs/node:18-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -36,15 +35,15 @@ ENV VITE_XFYUN_API_SECRET=$VITE_XFYUN_API_SECRET
 ENV VITE_AMAP_KEY=$VITE_AMAP_KEY
 ENV VITE_AMAP_SECURITY_CODE=$VITE_AMAP_SECURITY_CODE
 
+# 运行时环境变量（供server.js使用）
+ENV ALIBABA_API_KEY=$VITE_ALIBABA_API_KEY
+
 # 构建项目
-# 注意：VITE_* 环境变量会在构建时被编译进前端代码中
-# 这是 Vite 的工作方式，无法避免。Docker 警告是预期的。
 RUN npm run build
 
 # 阶段2: 运行阶段
-# 使用国内镜像源加速（如果无法连接Docker Hub，可以尝试使用阿里云镜像）
-# 阿里云镜像：registry.cn-hangzhou.aliyuncs.com/acs/nginx:alpine
-FROM nginx:alpine
+# 使用阿里云镜像源（如果 Docker Hub 无法访问）
+FROM registry.cn-hangzhou.aliyuncs.com/acs/nginx:alpine
 
 # 安装Node.js和wget用于运行API服务和健康检查
 RUN apk add --no-cache nodejs npm wget
@@ -71,12 +70,7 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # 注意：运行时环境变量应在docker-compose.yml或运行时通过-e参数传入
-# ALIBABA_API_KEY 需要在运行时提供，不要在构建时设置，以避免泄露
-#
-# 安全说明：
-# 1. VITE_* 环境变量必须在构建时传入（Vite要求），这些会被编译进前端代码
-# 2. 运行时环境变量（如 ALIBABA_API_KEY）应该在容器运行时通过 environment 或 -e 传入
-# 3. 构建时的 ARG/ENV 会被存储在镜像层中，可以通过 docker history 查看，因此敏感信息应该尽量在运行时传入
+# ALIBABA_API_KEY 需要在运行时提供
 
 # 暴露端口
 EXPOSE 80 3000

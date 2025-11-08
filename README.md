@@ -223,8 +223,16 @@ ai-travel-planner/
 └── vite.config.ts
 ```
 
+## 📦 下载预构建镜像
+
+预构建的 Docker 镜像可从 [GitHub Releases](https://github.com/yourusername/ai-travel-planner/releases) 下载。
+
+详细的使用说明请查看 [RELEASE_README.md](RELEASE_README.md)
+
 ## 📚 详细文档
 
+- [RELEASE_README.md](RELEASE_README.md) - Docker 镜像快速运行指南
+- [发布Release指南](发布Release指南.md) - 如何发布 Docker 镜像到 GitHub Release
 - [Docker安全使用指南](Docker安全使用指南.md) - Docker安全配置说明
 - [Docker镜像加速配置](Docker镜像加速配置.md) - 镜像加速配置说明
 

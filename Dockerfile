@@ -13,32 +13,10 @@ COPY package*.json ./
 # 安装所有依赖（包括devDependencies，构建时需要）
 RUN npm ci && npm cache clean --force
 
-# 复制源代码
+# 复制源代码（包括 .env 文件）
 COPY . .
 
-# 构建参数 - 在构建时传入环境变量
-ARG VITE_SUPABASE_URL
-ARG VITE_SUPABASE_ANON_KEY
-ARG VITE_ALIBABA_API_KEY
-ARG VITE_XFYUN_APP_ID
-ARG VITE_XFYUN_API_KEY
-ARG VITE_XFYUN_API_SECRET
-ARG VITE_AMAP_KEY
-ARG VITE_AMAP_SECURITY_CODE
-
-# 设置环境变量（构建时使用）
-ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
-ENV VITE_ALIBABA_API_KEY=$VITE_ALIBABA_API_KEY
-ENV VITE_XFYUN_APP_ID=$VITE_XFYUN_APP_ID
-ENV VITE_XFYUN_API_KEY=$VITE_XFYUN_API_KEY
-ENV VITE_XFYUN_API_SECRET=$VITE_XFYUN_API_SECRET
-ENV VITE_AMAP_KEY=$VITE_AMAP_KEY
-ENV VITE_AMAP_SECURITY_CODE=$VITE_AMAP_SECURITY_CODE
-
-# 构建项目
-# 注意：VITE_* 环境变量会在构建时被编译进前端代码中
-# 这是 Vite 的工作方式，无法避免。Docker 警告是预期的。
+# 构建项目（.env 文件中的环境变量会被 Vite 自动读取并编译进代码）
 RUN npm run build
 
 # 阶段2: 运行阶段
@@ -69,14 +47,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # 复制启动脚本
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
-
-# 注意：运行时环境变量应在docker-compose.yml或运行时通过-e参数传入
-# ALIBABA_API_KEY 需要在运行时提供，不要在构建时设置，以避免泄露
-#
-# 安全说明：
-# 1. VITE_* 环境变量必须在构建时传入（Vite要求），这些会被编译进前端代码
-# 2. 运行时环境变量（如 ALIBABA_API_KEY）应该在容器运行时通过 environment 或 -e 传入
-# 3. 构建时的 ARG/ENV 会被存储在镜像层中，可以通过 docker history 查看，因此敏感信息应该尽量在运行时传入
 
 # 暴露端口
 EXPOSE 80 3000

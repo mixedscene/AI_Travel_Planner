@@ -1,8 +1,19 @@
+:root {
+  --brand-primary: #6c8cff;
+  --brand-secondary: #9aa5ff;
+  --brand-accent: #e0c3fc;
+  --text-primary: #1f1f1f;
+  --text-secondary: #5b5b5b;
+  --surface: #ffffff;
+  --surface-muted: #f7f8fa;
+  --app-bg: #f7f8fa;
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 24px;
+  text-align: left;
 }
 
 .App {
@@ -12,9 +23,9 @@
 }
 
 .App-header {
-  background: linear-gradient(135deg, #1890ff 0%, #52c41a 100%);
-  padding: 40px;
-  color: white;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+  padding: 40px 32px;
+  color: #fff;
   border-radius: 8px;
   margin-bottom: 20px;
 }
@@ -22,11 +33,17 @@
 .App-header h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: white;
+  color: #fff;
 }
 
 .App-header p {
   font-size: 1.2rem;
   opacity: 0.9;
   margin: 0;
+}
+
+.card-surface {
+  background: var(--surface);
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
 }

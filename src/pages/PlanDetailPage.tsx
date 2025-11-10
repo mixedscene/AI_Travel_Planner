@@ -49,6 +49,13 @@ const PlanDetailPage: React.FC = () => {
     try {
       setLoading(true);
       const data = await travelPlanService.getPlan(id);
+      console.log('📋 加载的行程数据:', data);
+      console.log('📅 行程天数:', data.itinerary?.days?.length || 0);
+      if (data.itinerary?.days) {
+        console.log('📌 每天活动数:', data.itinerary.days.map((d: any, i: number) => 
+          `第${i+1}天: ${d.activities?.length || 0}个活动`
+        ));
+      }
       setPlan(data);
     } catch (error: any) {
       message.error('加载行程失败');
@@ -280,6 +287,11 @@ const PlanDetailPage: React.FC = () => {
                       content: activity.description,
                     }))
                 )}
+                path={plan.itinerary.days.flatMap((day) =>
+                  (day.activities || [])
+                    .filter(a => a.location?.coordinates?.lng && a.location?.coordinates?.lat)
+                    .map(a => a.location!.coordinates!)
+                )}
                 style={{ width: '100%', height: '500px' }}
               />
             </ErrorBoundary>
@@ -289,8 +301,14 @@ const PlanDetailPage: React.FC = () => {
 
       <Title level={3}>详细行程</Title>
       
-      {plan.itinerary?.days ? (
-        plan.itinerary.days.map((dayPlan, index) => renderDayPlan(dayPlan, index))
+      {plan.itinerary?.days && plan.itinerary.days.length > 0 ? (
+        <>
+          {console.log('🎯 开始渲染行程，总天数:', plan.itinerary.days.length)}
+          {plan.itinerary.days.map((dayPlan, index) => {
+            console.log(`🔄 渲染第${index + 1}天:`, dayPlan);
+            return renderDayPlan(dayPlan, index);
+          })}
+        </>
       ) : (
         <Empty description="暂无行程安排" />
       )}

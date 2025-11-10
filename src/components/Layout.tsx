@@ -84,10 +84,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   ];
 
   return (
-    <AntLayout style={{ minHeight: '100vh' }}>
-      <Sider 
-        trigger={null} 
-        collapsible 
+    <AntLayout style={{ minHeight: '100vh', background: 'var(--app-bg, #f7f8fa)' }}>
+      <Sider
+        theme="light"
+        trigger={null}
+        collapsible
         collapsed={collapsed}
         style={{
           overflow: 'auto',
@@ -96,34 +97,36 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           left: 0,
           top: 0,
           bottom: 0,
+          borderRight: '1px solid #f0f0f0',
+          background: 'linear-gradient(180deg, #ffffff 0%, #fafbff 100%)',
         }}
       >
         <div style={{ 
           height: 32, 
           margin: 16, 
-          background: 'rgba(255, 255, 255, 0.3)',
+          background: 'linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%)',
           borderRadius: 6,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          color: '#1f1f1f',
           fontWeight: 'bold',
         }}>
           {!collapsed && 'AI旅行规划师'}
         </div>
         
         <Menu
-          theme="dark"
+          theme="light"
           mode="inline"
           selectedKeys={[location.pathname]}
           items={menuItems}
         />
       </Sider>
       
-      <AntLayout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
+      <AntLayout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s', background: 'transparent' }}>
         <Header style={{ 
           padding: '0 24px', 
-          background: '#fff', 
+          background: 'linear-gradient(90deg, #ffffff 0%, #f6f9ff 100%)', 
           display: 'flex', 
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -156,7 +159,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Content style={{ 
           margin: 0, 
           minHeight: 280,
-          background: '#f0f2f5',
+          background: 'var(--app-bg, #f7f8fa)',
         }}>
           {children}
         </Content>

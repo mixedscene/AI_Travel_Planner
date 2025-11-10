@@ -36,6 +36,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # 复制API服务文件
 COPY --from=builder /app/server.js /app/server.js
 COPY --from=builder /app/package*.json /app/
+COPY --from=builder /app/.env /app/.env
 
 # 安装API依赖（只需要运行时依赖）
 WORKDIR /app

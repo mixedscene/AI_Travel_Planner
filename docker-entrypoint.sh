@@ -3,14 +3,22 @@ set -e
 
 echo "🚀 启动AI旅行规划器..."
 
-# 检查环境变量
-if [ -z "$ALIBABA_API_KEY" ] && [ -z "$VITE_ALIBABA_API_KEY" ]; then
-  echo "⚠️  警告: ALIBABA_API_KEY 环境变量未设置，AI功能可能无法使用"
-fi
-
 # 启动Node.js API服务
 echo "📡 启动API服务..."
 cd /app
+
+# 从 .env 文件加载环境变量到 shell
+if [ -f ".env" ]; then
+  export $(grep -v '^#' .env | grep -v '^$' | xargs)
+  echo "✅ 已加载 .env 文件"
+fi
+
+# 检查环境变量
+if [ -z "$ALIBABA_API_KEY" ]; then
+  echo "⚠️  警告: ALIBABA_API_KEY 环境变量未设置，AI功能可能无法使用"
+else
+  echo "✅ ALIBABA_API_KEY 已配置"
+fi
 
 # 检查server.js是否存在
 if [ ! -f "server.js" ]; then

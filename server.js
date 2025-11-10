@@ -1,5 +1,9 @@
 import http from 'http';
 import axios from 'axios';
+import { config } from 'dotenv';
+
+// 加载 .env 文件
+config();
 
 const PORT = 3000;
 
